@@ -1,0 +1,6 @@
+{
+  "presets": [
+    ["stage-1"], ["react"], ["env"]
+  ],
+  "plugins": ["transform-object-rest-spread", "transform-decorators"]
+}
