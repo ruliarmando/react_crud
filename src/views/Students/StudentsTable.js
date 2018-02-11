@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Card,
-  CardHeader,
-  CardBody,
   Table,
   Pagination,
   PaginationItem,
@@ -26,28 +23,43 @@ export default class StudentsTable extends Component {
   
   render() {
     return (
-      <Card>
-        <CardHeader>
-          <i className="fa fa-align-justify"></i> Students
-        </CardHeader>
-        <CardBody>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Sex</th>
-                <th>Address</th>
-                <th>{' '}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.props.data.map(student => this.renderRow(student))
-              }
-            </tbody>          
-          </Table>
-        </CardBody>
-      </Card>
+      <div>
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Sex</th>
+              <th>Address</th>
+              <th>{' '}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              this.props.data.map(student => this.renderRow(student))
+            }
+          </tbody>          
+        </Table>
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink previous href="#"></PaginationLink>
+          </PaginationItem>
+          <PaginationItem active>
+            <PaginationLink href="#">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">2</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">3</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">4</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink next href="#"></PaginationLink>
+          </PaginationItem>
+        </Pagination>
+      </div>
     );
   }
 }
