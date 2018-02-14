@@ -11,6 +11,7 @@ import Footer from '../../components/Footer';
 
 import Dashboard from '../../views/Dashboard';
 import Students from '../../views/Students';
+import StudentsCreate from '../../views/Students/StudentsCreate';
 
 class Full extends Component {
   render() {
@@ -23,8 +24,9 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid>
               <Switch>
-                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route path="/students" name="Students" component={Students} />
+                <Route path="/dashboard" component={Dashboard}/>
+                <Route exact path="/students" component={Students} />
+                <Route path="/students/create" component={StudentsCreate} /> 
                 <Redirect from="/" to="/dashboard"/>
               </Switch>
             </Container>
