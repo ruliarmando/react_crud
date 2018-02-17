@@ -3,12 +3,11 @@ import { withFormik } from 'formik';
 import { Col, Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 import Yup from 'yup';
 
-const isValid = (error) => {
-  if (error === undefined) {
-    return null;
-  }
-
-  return false;
+const isValid = (error, touched) => {
+  if (touched && error) return false;
+  if (!touched && !error) return null;
+  if (!touched && error) return null;
+  return true;
 };
 
 const StudentsForm = ({
@@ -24,13 +23,15 @@ const StudentsForm = ({
     <FormGroup row>
       <Label for="name" sm={2}>Name</Label>
       <Col sm={10}>
-        <Input 
+        <Input
           type="text"
-          name="name" 
-          id="name" 
-          placeholder="Student Name" 
+          name="name"
+          id="name"
+          placeholder="Student Name"
+          value={values.name}
           onChange={handleChange}
-          valid={isValid(errors.name)}
+          onBlur={handleBlur}
+          valid={isValid(errors.name, touched.name)}
         />
         <FormFeedback>{errors.name}</FormFeedback>
       </Col>
@@ -40,14 +41,24 @@ const StudentsForm = ({
       <Col sm={10}>
         <FormGroup check inline>
           <Label check>
-            <Input type="radio" name="sex" value="male" onChange={handleChange} valid={isValid(errors.sex)} />{' '}
-            Male
+            <Input
+              type="radio"
+              name="sex"
+              value="male"
+              onChange={handleChange}
+              valid={isValid(errors.sex, touched.sex)}
+            />{' '}Male
           </Label>
         </FormGroup>
         <FormGroup check inline>
           <Label check>
-            <Input type="radio" name="sex" value="female" onChange={handleChange} valid={isValid(errors.sex)} />{' '}
-            Female
+            <Input
+              type="radio"
+              name="sex"
+              value="female"
+              onChange={handleChange}
+              valid={isValid(errors.sex, touched.sex)}
+            />{' '}Female
           </Label>
         </FormGroup>
         <FormFeedback>{errors.sex}</FormFeedback>
@@ -57,32 +68,34 @@ const StudentsForm = ({
       <Label for="address" sm={2}>Address</Label>
       <Col sm={10}>
           <Input
-            type="text" 
+            type="text"
             name="address"
             id="address"
             placeholder="Student Address"
+            value={values.address}
             onChange={handleChange}
-            valid={isValid(errors.address)}
+            onBlur={handleBlur}
+            valid={isValid(errors.address, touched.address)}
           />
           <FormFeedback>{errors.address}</FormFeedback>
       </Col>
     </FormGroup>
     <FormGroup>
       <Col>
-        <Button className="float-right">Save</Button>
+        <Button className="float-right" disabled={isSubmitting}>Save</Button>
       </Col>
     </FormGroup>
   </Form>
 );
 
 export default withFormik({
+  mapPropsToValues: props => ({ name: '', sex: '', address: '' }),
   validationSchema: Yup.object().shape({
     name: Yup.string().required('Name is required'),
     sex: Yup.string().required('Sex is required'),
     address: Yup.string().required('Address is required'),
   }),
-  handleSubmit: (values, actions) => {
-    console.log(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false)
+  handleSubmit: (values, { props, setSubmitting, resetForm }) => {
+    props.onSubmit(values, () => { resetForm(); });
   }
 })(StudentsForm);

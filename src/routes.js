@@ -4,4 +4,5 @@ const routes = {
   '/students': 'Students',
   '/students/create': 'Add New Student',
 };
+
 export default routes;
