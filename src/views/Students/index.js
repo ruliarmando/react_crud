@@ -8,13 +8,17 @@ import {
   Button
 } from 'reactstrap';
 
-import { load } from '../../ducks/students';
+import { load, remove } from '../../ducks/students';
 
 import StudentsTable from './StudentsTable';
 
 class Students extends Component {
   componentDidMount() {
     this.props.load();
+  }
+
+  handleItemDelete = (id) => {
+    this.props.remove(id).then(this.props.load);
   }
   
   render() {
@@ -30,7 +34,7 @@ class Students extends Component {
             </Link>
             <br/>
             <br/>
-            <StudentsTable data={this.props.students.items} />
+            <StudentsTable data={this.props.students.items} onItemDelete={this.handleItemDelete} />
           </CardBody>
         </Card>
       </div>
@@ -42,5 +46,5 @@ export default connect(
   state => ({
     students: state.students,
   }),
-  { load }
+  { load, remove }
 )(Students);
