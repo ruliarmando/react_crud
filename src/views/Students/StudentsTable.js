@@ -4,8 +4,10 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
-  Badge
+  Badge,
+  Button
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default class StudentsTable extends Component {
   renderRow(item) {
@@ -15,7 +17,16 @@ export default class StudentsTable extends Component {
         <td>{item.sex}</td>
         <td>{item.address}</td>
         <td>
-          <Badge color="success">Active</Badge>
+          <Link to={`/students/${item._id}/edit`}>
+            <Button color="primary" title="Edit"><i className="icon-pencil"></i></Button>
+          </Link>{' '}
+          <Button
+            color="danger"
+            title="Delete"
+            onClick={() => { this.props.onItemDelete(item._id) }}
+          >
+            <i className="icon-trash"></i>
+          </Button>
         </td>
       </tr>
     );
