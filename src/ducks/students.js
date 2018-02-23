@@ -1,47 +1,44 @@
+import createRoutines from '../utils/createRoutines';
 import api from '../api';
 
-export const STUDENT_LOAD_REQUEST = 'STUDENT_LOAD_REQUEST';
-export const STUDENT_LOAD_FAILED = 'STUDENT_LOAD_FAILED';
-export const STUDENT_LOAD_SUCCESS = 'STUDENT_LOAD_SUCCESS';
-export const STUDENT_SAVE_REQUEST = 'STUDENT_SAVE_REQUEST';
-export const STUDENT_SAVE_FAILED = 'STUDENT_SAVE_FAILED';
-export const STUDENT_SAVE_SUCCESS = 'STUDENT_SAVE_SUCCESS';
-
-const loadFailed = (err) => ({
-  type: STUDENT_LOAD_FAILED,
-  payload: err,
-});
-
-const loadSuccess = (data) => ({
-  type: STUDENT_LOAD_SUCCESS,
-  payload: data,
-});
+export const studentLoad = createRoutines('STUDENT_LOAD');
+export const studentSave = createRoutines('STUDENT_SAVE');
+export const studentUpdate = createRoutines('STUDENT_UPDATE');
+export const studentDelete = createRoutines('STUDENT_DELETE');
 
 export const load = () => {
   return dispatch => {
-    dispatch({ type: STUDENT_LOAD_REQUEST });
+    dispatch(studentLoad.request());
     return api.get('/students')
-      .then(result => dispatch(loadSuccess(result.data)))
-      .catch(err => dispatch(loadFailed(err)));
+      .then(result => dispatch(studentLoad.success(result.data)))
+      .catch(err => dispatch(studentLoad.failed(err)));
   };
 };
 
-const saveFailed = (err) => ({
-  type: STUDENT_SAVE_FAILED,
-  payload: err,
-});
-
-const saveSuccess = (data) => ({
-  type: STUDENT_SAVE_SUCCESS,
-  payload: data,
-});
-
-export const save = (data) => {
+export const save = data => {
   return dispatch => {
-    dispatch({ type: STUDENT_SAVE_REQUEST });
+    dispatch(studentSave.request());
     return api.post('/students', data)
-      .then(result => dispatch(saveSuccess(result.data)))
-      .catch(err => dispatch(saveFailed(err)));
+      .then(result => dispatch(studentSave.success(result.data)))
+      .catch(err => dispatch(studentSave.failed(err)));
+  };
+};
+
+export const update = (id, data) => {
+  return dispatch => {
+    dispatch(studentUpdate.request());
+    return api.put(`/students/${id}`, data)
+      .then(result => dispatch(studentUpdate.success(result.data)))
+      .catch(err => dispatch(studentUpdate.failed(err)));
+  };
+};
+
+export const remove = id => {
+  return dispatch => {
+    dispatch(studentDelete.request());
+    return api.delete(`/students/${id}`)
+      .then(result => dispatch(studentDelete.success(result.data)))
+      .catch(err => dispatch(studentDelete.failed(err)));
   };
 };
 
@@ -53,14 +50,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case STUDENT_LOAD_REQUEST: {
+    case studentLoad.REQUEST: {
       return {
         ...state,
         loading: true,
       };
       break;
     }
-    case STUDENT_LOAD_SUCCESS: {
+    case studentLoad.SUCCESS: {
       return {
         ...state,
         items: action.payload.data,
@@ -68,7 +65,7 @@ const reducer = (state = initialState, action) => {
       };
       break;
     }
-    case STUDENT_LOAD_FAILED: {
+    case studentLoad.FAILED: {
       return {
         ...state,
         error: action.payload,
