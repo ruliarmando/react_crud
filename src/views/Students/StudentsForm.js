@@ -1,6 +1,7 @@
 import React from 'react';
 import { withFormik } from 'formik';
 import { Col, Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
+import { toast } from 'react-toastify';
 import Yup from 'yup';
 
 const isValid = (error, touched) => {
@@ -47,6 +48,7 @@ const StudentsForm = ({
               value="male"
               onChange={handleChange}
               valid={isValid(errors.sex, touched.sex)}
+              checked={values.sex === 'male'}
             />{' '}Male
           </Label>
         </FormGroup>
@@ -58,6 +60,7 @@ const StudentsForm = ({
               value="female"
               onChange={handleChange}
               valid={isValid(errors.sex, touched.sex)}
+              checked={values.sex === 'female'}
             />{' '}Female
           </Label>
         </FormGroup>
@@ -89,13 +92,20 @@ const StudentsForm = ({
 );
 
 export default withFormik({
-  mapPropsToValues: props => ({ name: '', sex: '', address: '' }),
+  mapPropsToValues: props => ({
+    name: props.student ? props.student.name : '',
+    sex: props.student ? props.student.sex : '',
+    address: props.student ? props.student.address : '',
+  }),
   validationSchema: Yup.object().shape({
     name: Yup.string().required('Name is required'),
     sex: Yup.string().required('Sex is required'),
     address: Yup.string().required('Address is required'),
   }),
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    props.onSubmit(values, () => { resetForm(); });
+    props.onSubmit(values, () => {
+      resetForm();
+      toast('Data has been saved');
+    });
   }
 })(StudentsForm);
