@@ -8,11 +8,13 @@ import {
   Button
 } from 'reactstrap';
 
+import Pagination from '../../components/Pagination';
+
 import { load, remove } from '../../ducks/students';
 
 import StudentsTable from './StudentsTable';
 
-class Students extends Component {
+class Students extends Component { 
   componentDidMount() {
     this.props.load();
   }
@@ -20,8 +22,14 @@ class Students extends Component {
   handleItemDelete = (id) => {
     this.props.remove(id).then(this.props.load);
   }
+
+  handlePageChange = (number) => {
+    const skip = number * 10;
+    this.props.load({ skip });
+  }
   
   render() {
+    const { students: { items, paging } } = this.props;
     return (
       <div className="animated fadeIn">
         <Card>
@@ -34,7 +42,15 @@ class Students extends Component {
             </Link>
             <br/>
             <br/>
-            <StudentsTable data={this.props.students.items} onItemDelete={this.handleItemDelete} />
+            <StudentsTable
+              data={items}
+              onItemDelete={this.handleItemDelete}
+            />
+            <Pagination
+              total={paging.total}
+              pageSize={paging.limit}
+              onChange={this.handlePageChange}
+            />
           </CardBody>
         </Card>
       </div>
