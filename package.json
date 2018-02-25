@@ -41,6 +41,7 @@
     "font-awesome": "4.7.0",
     "formik": "^0.10.5",
     "history": "4.7.2",
+    "prop-types": "^15.6.0",
     "react": "16.1.1",
     "react-chartjs-2": "2.6.4",
     "react-dom": "16.1.1",
