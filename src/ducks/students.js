@@ -6,10 +6,10 @@ export const studentSave = createRoutines('STUDENT_SAVE');
 export const studentUpdate = createRoutines('STUDENT_UPDATE');
 export const studentDelete = createRoutines('STUDENT_DELETE');
 
-export const load = () => {
+export const load = ({limit = 10, skip = 0} = {}) => {
   return dispatch => {
     dispatch(studentLoad.request());
-    return api.get('/students')
+    return api.get(`/students?$limit=${limit}&$skip=${skip}`)
       .then(result => dispatch(studentLoad.success(result.data)))
       .catch(err => dispatch(studentLoad.failed(err)));
   };
@@ -46,10 +46,15 @@ const initialState = {
   loading: false,
   items: [],
   error: null,
+  paging: {
+    limit: 10,
+    total: 0,
+    skip: 0,
+  },
 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
+const reducer = (state = initialState, { type, payload }) => {
+  switch (type) {
     case studentLoad.REQUEST: {
       return {
         ...state,
@@ -60,7 +65,12 @@ const reducer = (state = initialState, action) => {
     case studentLoad.SUCCESS: {
       return {
         ...state,
-        items: action.payload.data,
+        items: payload.data,
+        paging: {
+          limit: payload.limit,
+          skip: payload.skip,
+          total: payload.total,
+        },
         loading: false,
       };
       break;
@@ -68,7 +78,7 @@ const reducer = (state = initialState, action) => {
     case studentLoad.FAILED: {
       return {
         ...state,
-        error: action.payload,
+        error: payload,
         loading: false,
       };
       break;
