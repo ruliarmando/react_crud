@@ -9,25 +9,22 @@ import {
 } from 'reactstrap';
 
 import Pagination from '../../components/Pagination';
-
-import { load, remove } from '../../ducks/students';
-
 import StudentsTable from './StudentsTable';
 
-class Students extends Component { 
+class Students extends Component {
   componentDidMount() {
     this.props.load();
   }
 
   handleItemDelete = (id) => {
-    this.props.remove(id).then(this.props.load);
+    this.props.remove({ id }).then(this.props.load);
   }
 
   handlePageChange = (number) => {
     const skip = number * 10;
     this.props.load({ skip });
   }
-  
+
   render() {
     const { students: { items, paging } } = this.props;
     return (
@@ -62,5 +59,5 @@ export default connect(
   state => ({
     students: state.students,
   }),
-  { load, remove }
+  ({ students: { load, remove } }) => ({ load, remove })
 )(Students);

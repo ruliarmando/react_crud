@@ -8,11 +8,10 @@ import {
 import { connect } from 'react-redux';
 
 import StudentsForm from './StudentsForm';
-import { save } from '../../ducks/students';
 
 class StudentsCreate extends Component {
   handleSubmit = (values, callback) => {
-    this.props.save(values).then(callback);
+    this.props.save({ data: values }).then(callback);
   }
 
   render() {
@@ -31,4 +30,4 @@ class StudentsCreate extends Component {
   }
 }
 
-export default connect(null, { save })(StudentsCreate);
+export default connect(null, ({ students: { save } }) => ({ save }))(StudentsCreate);

@@ -8,11 +8,13 @@ import {
 import { connect } from 'react-redux';
 
 import StudentsForm from './StudentsForm';
-import { update } from '../../ducks/students';
 
 class StudentsEdit extends Component {
   handleSubmit = (values, callback) => {
-    this.props.update(this.props.match.params.id, values).then(callback);
+    this.props.update({
+      id: this.props.match.params.id,
+      data: values
+    }).then(callback);
   }
 
   render() {
@@ -37,5 +39,5 @@ export default connect(
   state => ({
     students: state.students,
   }),
-  { update }
+  ({ students: { update } }) => ({ update })
 )(StudentsEdit);

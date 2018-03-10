@@ -1,15 +1,8 @@
-import { applyMiddleware, createStore, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { init } from '@rematch/core';
+import * as models from './models';
 
-import students from './ducks/students';
-
-const rootReducer = combineReducers({
-  students,
+const store = init({
+  models,
 });
-
-const middlewares = applyMiddleware(thunk);
-
-const store = createStore(rootReducer, composeWithDevTools(middlewares));
 
 export default store;
