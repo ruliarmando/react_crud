@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {NavLink} from 'react-router-dom';
-import {Badge, Nav, NavItem, NavLink as RsNavLink} from 'reactstrap';
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
 import classNames from 'classnames';
 import nav from './_nav';
 import SidebarFooter from './../SidebarFooter';
@@ -37,7 +37,7 @@ class Sidebar extends Component {
     const badge = (badge) => {
       if (badge) {
         const classes = classNames( badge.class );
-        return (<Badge className={ classes } color={ badge.variant }>{ badge.text }</Badge>)
+        return (<Badge className={classes} color={badge.variant}>{badge.text}</Badge>)
       }
     };
 
@@ -47,13 +47,13 @@ class Sidebar extends Component {
     // nav list section title
     const title = (title, key) => {
       const classes = classNames( 'nav-title', title.class);
-      return (<li key={key} className={ classes }>{wrapper(title)} </li>);
+      return (<li key={key} className={classes}>{wrapper(title)} </li>);
     };
 
     // nav list divider
     const divider = (divider, key) => {
       const classes = classNames( 'divider', divider.class);
-      return (<li key={key} className={ classes }></li>);
+      return (<li key={key} className={classes}></li>);
     };
 
     // nav item with nav link
